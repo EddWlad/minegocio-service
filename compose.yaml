@@ -1,9 +1,16 @@
+version: '3.8'
+
 services:
-  postgres:
-    image: 'postgres:latest'
+  postgres-db:
+    image: postgres:latest
+    restart: always
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      POSTGRES_USER: root
+      POSTGRES_DB: minegocio-db
+      POSTGRES_PASSWORD: root
+    volumes:
+      - postgres:/var/lib/postgresql/data
     ports:
-      - '5432'
+      - 5452:5432
+volumes:
+  postgres:
