@@ -4,6 +4,7 @@ import com.tidsec.minegocio_service.entities.Customer;
 import com.tidsec.minegocio_service.services.ICustomerService;
 import com.tidsec.minegocio_service.utils.MapperUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,15 +34,19 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody CustomerDTO CustomerDTO) throws Exception{
-        Customer obj = customerService.save(mapperUtil.map(CustomerDTO, Customer.class));
+    public ResponseEntity<CustomerDTO> save(@RequestBody CustomerDTO customerDTO) throws Exception{
 
+        Customer savedCustomer = customerService.saveCustomerWithMainAddress(customerDTO);
+
+        // Construimos la URI de respuesta
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(obj.getIdCustomer())
+                .buildAndExpand(savedCustomer.getIdCustomer())
                 .toUri();
-        return ResponseEntity.created(location).build();
+
+        // Retornamos el objeto creado y la URI
+        return ResponseEntity.created(location).body(mapperUtil.map(savedCustomer, CustomerDTO.class));
     }
 
     @PutMapping("/{id}")
@@ -51,8 +56,14 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") String id) throws Exception{
-        customerService.delete(UUID.fromString(id));
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> delete(@PathVariable("id") String id) throws Exception{
+        boolean deleted = customerService.delete(UUID.fromString(id));
+
+        if (deleted) {
+            return ResponseEntity.ok("Customer deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Customer not found with ID: " + id);
+        }
     }
 }

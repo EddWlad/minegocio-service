@@ -1,6 +1,7 @@
 package com.tidsec.minegocio_service.dtos;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -29,6 +30,7 @@ public class AddressDTO {
 
     private Integer status = 1;
 
+    @JsonIgnore
     private CustomerDTO customer;
 
 }
