@@ -1,6 +1,9 @@
 package com.tidsec.minegocio_service.dtos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.util.List;
@@ -15,6 +18,7 @@ public class CustomerDTO {
     @EqualsAndHashCode.Include
     private UUID idCustomer;
 
+    @Pattern(regexp = "^(RUC|Cédula)$", message = "Identification type must be 'RUC' or 'Cédula'.")
     @NotBlank(message = "Identification type is required")
     private String identificationType;
 
@@ -35,5 +39,6 @@ public class CustomerDTO {
 
     private Integer status = 1;
 
+    @JsonManagedReference
     private List<AddressDTO> address;
 }

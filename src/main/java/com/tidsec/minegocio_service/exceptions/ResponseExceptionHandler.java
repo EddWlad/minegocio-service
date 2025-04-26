@@ -1,5 +1,6 @@
 package com.tidsec.minegocio_service.exceptions;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -27,6 +28,14 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler{
         CustomErrorRecord err = new CustomErrorRecord(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public ResponseEntity<CustomErrorRecord> handleDataIntegrityViolation(DataIntegrityViolationException ex, WebRequest request) {
+        String message = "Customer already exists";
+
+        CustomErrorRecord error = new CustomErrorRecord(LocalDateTime.now(), message, request.getDescription(false));
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT); // 409 Conflict
     }
 
     @ExceptionHandler(ArithmeticException.class)

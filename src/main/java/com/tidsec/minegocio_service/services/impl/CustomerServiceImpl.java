@@ -30,7 +30,6 @@ public class CustomerServiceImpl extends GenericServiceImpl<Customer, UUID> impl
     @Transactional
     public Customer saveCustomerWithMainAddress(CustomerDTO customerDTO) throws Exception {
 
-        // Verificar si existe el cliente por ID
         if (customerDTO.getIdCustomer() != null) {
             Optional<Customer> optionalCustomer = customerRepository.findById(customerDTO.getIdCustomer());
 
@@ -42,23 +41,28 @@ public class CustomerServiceImpl extends GenericServiceImpl<Customer, UUID> impl
             }
         }
 
-        // Validar que haya al menos una dirección marcada como matriz
         if (customerDTO.getAddress() == null || customerDTO.getAddress().stream().noneMatch(AddressDTO::isMainAddress)) {
             throw new IllegalArgumentException("\n" +
                     "There must be at least one main address.");
         }
 
-        // Mapear DTO a entidad
         Customer customer = mapperUtil.map(customerDTO, Customer.class);
 
-        // Asignar el cliente a sus direcciones
         if (customer.getAddressList() != null) {
             for (Address address : customer.getAddressList()) {
                 address.setCustomer(customer);
             }
         }
-
-        // Guardar todo en la misma transacción
         return customerRepository.save(customer);
+    }
+
+    @Override
+    public Customer findByIdentificationNumber(String identificationNumber) throws Exception {
+        return customerRepository.findByIdentificationNumber(identificationNumber);
+    }
+
+    @Override
+    public Customer findByName(String name) throws Exception {
+        return customerRepository.findByName(name);
     }
 }

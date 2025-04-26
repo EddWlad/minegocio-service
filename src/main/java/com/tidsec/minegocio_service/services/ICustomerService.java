@@ -7,4 +7,8 @@ import java.util.UUID;
 
 public interface ICustomerService extends IGenericService<Customer, UUID>{
     Customer saveCustomerWithMainAddress(CustomerDTO customerDTO) throws Exception;
+
+    Customer findByIdentificationNumber(String identificationNumber) throws Exception;
+
+    Customer findByName(String name) throws Exception;
 }

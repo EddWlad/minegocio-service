@@ -1,7 +1,10 @@
 package com.tidsec.minegocio_service.controllers;
 import com.tidsec.minegocio_service.dtos.AddressDTO;
+import com.tidsec.minegocio_service.dtos.CustomerDTO;
 import com.tidsec.minegocio_service.entities.Address;
+import com.tidsec.minegocio_service.entities.Customer;
 import com.tidsec.minegocio_service.services.IAddressService;
+import com.tidsec.minegocio_service.services.ICustomerService;
 import com.tidsec.minegocio_service.utils.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import java.util.UUID;
 public class AddressController {
 
     private final IAddressService addressService;
+    private final ICustomerService customerService;
     private final MapperUtil mapperUtil;
 
     @GetMapping
@@ -33,15 +37,29 @@ public class AddressController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody AddressDTO AddressDTO) throws Exception{
-        Address obj = addressService.save(mapperUtil.map(AddressDTO, Address.class));
+    public ResponseEntity<AddressDTO> save(@RequestBody AddressDTO addressDTO) throws Exception{
+        Customer customer = customerService.findById(addressDTO.getCustomer().getIdCustomer());
+
+        if (addressDTO.isMainAddress()) {
+            List<Address> addressList = customer.getAddressList();
+
+            boolean alreadyHasMainAddress = addressList.stream()
+                    .anyMatch(Address::isMainAddress);
+
+            if (alreadyHasMainAddress) {
+                throw new IllegalArgumentException("The customer already has a main address registered.");
+            }
+        }
+
+        Address obj = addressService.save(mapperUtil.map(addressDTO, Address.class));
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(obj.getIdAddress())
                 .toUri();
-        return ResponseEntity.created(location).build();
+
+        return ResponseEntity.created(location).body(mapperUtil.map(obj, AddressDTO.class));
     }
 
     @PutMapping("/{id}")

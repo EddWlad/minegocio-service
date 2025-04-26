@@ -7,4 +7,6 @@ import java.util.UUID;
 
 @Repository
 public interface ICustomerRepository extends IGenericRepository<Customer, UUID>{
+    Customer findByName(String name);
+    Customer findByIdentificationNumber(String identificationNumber);
 }
