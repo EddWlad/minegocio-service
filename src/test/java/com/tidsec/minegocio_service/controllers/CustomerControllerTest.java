@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-import static org.mockito.BDDMockito.given;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -24,7 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)

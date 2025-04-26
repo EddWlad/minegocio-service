@@ -1,0 +1,184 @@
+{
+  "info": {
+    "name": "MiNegocio Service API",
+    "_postman_id": "12345678-1234-5678-1234-567812345678",
+    "description": "Colección de prueba para los endpoints del servicio MiNegocio.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Crear Cliente",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"identificationType\": \"RUC\",\n  \"identificationNumber\": \"1720723677001\",\n  \"name\": \"Eliot\",\n  \"lastName\": \"Morocho\",\n  \"email\": \"prueba2@gmail.com\",\n  \"phoneNumber\": \"0988394473\",\n  \"status\": 1,\n  \"address\": [\n    {\n      \"province\": \"Chimborazo\",\n      \"city\": \"Riobamba\",\n      \"address\": \"Lo nolibos y duran\",\n      \"mainAddress\": true,\n      \"status\": 1\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/customers",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "customers"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Buscar Cliente por ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/customers/:id",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "customers",
+            ":id"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Buscar Cliente por Nombre",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/customers/name/:name",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "customers",
+            "name",
+            ":name"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Buscar Cliente por Número de Identificación",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/customers/identification/:identificationNumber",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "customers",
+            "identification",
+            ":identificationNumber"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Listar Todos los Clientes",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/customers",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "customers"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Actualizar Cliente",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/customers/:id",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "customers",
+            ":id"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Eliminar Cliente",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:8080/customers/:id",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "customers",
+            ":id"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Crear Dirección",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer\": {\n    \"idCustomer\": \"df424197-03ab-4b0c-80ac-56389a828517\"\n  },\n  \"province\": \"Azuay\",\n  \"city\": \"Cuenca\",\n  \"address\": \"teleferico y asoma\",\n  \"mainAddress\": false,\n  \"status\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/address",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "address"
+          ]
+        }
+      }
+    }
+  ]
+}
